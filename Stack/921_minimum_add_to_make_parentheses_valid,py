@@ -1,0 +1,25 @@
+class Solution:
+    def minAddToMakeValid(self, s: str) -> int:
+        # Add opening parentheses to stack
+        # If you see a closing parentheses, pop from stack if it is not empty.
+        # If it is empty, increment moves (adds)
+        # If the stack isn't empty after going through the string, pop from it until it's empty
+        # For every pop, increment moves. 
+        stack = []
+        moves = 0
+        for c in s:
+            # If we see an opening, add it to the stack
+            if c == '(':
+                stack.append(c)
+            # For closing, pop from stack if you can. Otherwise, increment moves
+            else:
+                if stack:
+                    stack.pop()
+                else:
+                    moves += 1
+        # If the stack isn't empty at the end, increment moves for every element on it
+        while stack:
+            stack.pop()
+            moves += 1
+        
+        return moves
