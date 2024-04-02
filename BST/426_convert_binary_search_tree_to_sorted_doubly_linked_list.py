@@ -56,4 +56,4 @@ while res:
         break
 
 # Time complexity: O(N)
-# Space complexity: O(N)
+# Space complexity: O(H) - where H is the height of the tree. 
