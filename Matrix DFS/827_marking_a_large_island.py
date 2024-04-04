@@ -72,3 +72,6 @@ class Solution:
             return n * n
         else:
             return max_area
+
+# T: O(N^2) - We have to make 2 passes through the entire N x N grid
+# S: O(N^2) - We have to keep an area map and worst case is that every other grid is an island that we'd have to store. So we'd have to store N^2/2, which is still N^2.
