@@ -27,3 +27,6 @@ class Solution:
                 R -= 1
         
         return True
+
+# T: O(N) - We have to go through the entire string in the worst case.
+# S: O(1) - We only keep pointers. 
