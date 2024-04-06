@@ -16,13 +16,13 @@ class Solution:
             # Otherwise just add to the stack
             else:
                 stack.append([c, 1])
-        sb = []
+        res = ""
         # Go through stack and build the string
         for item in stack:
             for i in range(item[1]):
-                sb.append(item[0])
+                res += item[0]
         
-        return "".join(sb)
+        return res
 
-# T: O(N) - We go through the string once and then the stack once and then use join, but separately. So it rounds down to O(N). 
+# T: O(N) - We go through the string once and then the stack once, but separately. So it rounds down to O(N). 
 # S: O(N) - We use a stack and a string builder for the result, so O(N). 
