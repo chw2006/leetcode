@@ -25,4 +25,4 @@ class Solution:
         return res
 
 # T: O(N) - We go through the string once and then the stack once, but separately. So it rounds down to O(N). 
-# S: O(N) - We use a stack and a string builder for the result, so O(N). 
+# S: O(N) - We use a stack so O(N). 
