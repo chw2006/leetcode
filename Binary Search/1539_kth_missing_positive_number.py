@@ -20,10 +20,10 @@ class Solution:
             else:
                 right = mid - 1
         
-        # Right pointer is the boundary in this case. 
-        # If k is within the range of values given, then the right pointer will point to the last index before the kth value.
-        # If k is out of the range of values given ,the the right pointer will point to the last value in the array. Kth value will be that + k + 1 (to acccount for index starting at 0)
-        return right + k + 1
+        # left pointer is the boundary in this case. 
+        # If k is within the range of values given, then the left pointer will point to the last index before the kth value.
+        # If k is out of the range of values given ,the the left pointer will point to the last value in the array. Kth value will be that + k
+        return left + k
     
 # T: O(logN) since we are using binary search
 # S: O(1) since we only keep a left and right pointer
