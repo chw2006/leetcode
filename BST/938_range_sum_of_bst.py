@@ -23,3 +23,5 @@ class Solution:
         # The case where the root value is within the range, so try both children
         else:
             return root.val + self.rangeSumBST(root.left, low, high) + self.rangeSumBST(root.right, low, high)
+# T: O(N) - In the worst case, this is O(N) because it depends on the range that is given. 
+# S: O(N) - Counting recurisve stacks, this is O(N) in the case where the tree is unbalanced. 
