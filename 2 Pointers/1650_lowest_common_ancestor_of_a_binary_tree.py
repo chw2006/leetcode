@@ -23,6 +23,8 @@ def set_solution(p, q):
         q = q.parent
         
     return None
+# T: O(N) - Must at worst, traverse all nodes.
+# S: O(N) - Set could at worst contain all nodes. 
 
 # 2 pointers solution
 def two_pointers(p, q):
@@ -47,6 +49,8 @@ def two_pointers(p, q):
     # Kind of like a fast/slow pointer algorithm. 
     
     return P
+# T: O(N) - Must traverse all nodes at worst.
+# S: O(1) - This only uses pointers. 
 
 if __name__ == "__main__":
     # Create a binary tree
