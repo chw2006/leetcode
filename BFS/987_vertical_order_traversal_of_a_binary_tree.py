@@ -54,3 +54,6 @@ class Solution:
             res.append(items)
         
         return res
+
+# T: O(NlogN) - The sorting takes KlogN time, where K is the number of columns. 
+# S: O(N) - We use a queue
