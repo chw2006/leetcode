@@ -40,3 +40,6 @@ class Solution:
         
         # We must return the result in reverse since we added it back to front. 
         return ''.join(reversed(res))
+
+# T: O(N) - have to iterate through both strings. The join at the end is also O(N). 
+# S: O(N) - we have to keep a string builder to hold the result
