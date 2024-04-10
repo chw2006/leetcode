@@ -53,3 +53,6 @@ class Solution:
             lists = merged
 
         return lists[0]
+
+# T: O(NlogK) - Doing the 2 at a time merge brings down the loop complexity to logK (there are k lists). Each merge takes O(N). So O(NlogK).
+# S: O(1) - We are replacing in-place, so no new extra memory. 
