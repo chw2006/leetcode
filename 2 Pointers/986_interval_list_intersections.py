@@ -1,37 +1,31 @@
 class Solution:
     def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
-        # There are 2 basic cases to consider.
-        # Where the 2 sets are completely distjoint (no overlap), we just want to skip to the next values in the list.
-        # When there is an intersection, we want to add to the result. 
-        # The intersection is the max of the starts and the min of the ends. 
-        # If end1 > end2, increment p2
-        # Otherwise, increment p1
+        # Need to use 2 pointers to traverse both intervals.
+        # The condition we check to see if 2 intervals overlap is if the min of the 2 ends is larger or equal to the max of the 2 starts. 
+        # If we have an intersection, we want to add (max(starts), min(ends) to the result.
+        # Regardless of intersection, we need to see which pointer we increment.
+        # We always want to increment the pointer that has a smaller end time. 
+        # If one list is longer than the other, we only go until the smaller list is exhausted. 
 
         p1 = 0
         p2 = 0
-        intersections = []
+        res = []
 
         while p1 < len(firstList) and p2 < len(secondList):
             start1, end1 = firstList[p1]
             start2, end2 = secondList[p2]
 
-            # Disjoint cases
-            # If B starts after A ends, we need to increment A. 
-            if start2 > end1:
-                p1 += 1
-            # If A starts after B ends, we need to increment B. 
-            elif start1 > end2:
-                p2 += 1
-            # Intersection case
-            else:
-                # If the 2 intervals intersect, we always take the max of the start and the min of the end. Because the intersection is always the contained block. 
-                intersections.append([max(start1, start2), min(end1, end2)])
-                # For overlap case. If 1 ends after 2, only increment p2. 
-                if end1 > end2:
-                    p2 += 1
-                # If 2 ends after 1, increment p1. 
-                else:
-                    p1 += 1
+            # We have an intersection
+            if min(end1, end2) >= max(start1, start2):
+                res.append([max(start1, start2), min(end1 ,end2)])
             
-        return intersections
-                
+            # Increment the pointer that's been exhausted (shorter end)
+            if end2 > end1:
+                p1 += 1
+            else:
+                p2 += 1
+        
+        return res
+    
+    # T: O(N + M)
+    # S: O(N + M)
