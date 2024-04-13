@@ -51,5 +51,5 @@ class Solution:
         
         return res
     
-    # T: O(N) since we go through every cell
-    # S: O(N) since we store the result
+    # T: O(M*N) since we go through every cell
+    # S: O(M*N) since we store the result
