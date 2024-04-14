@@ -1,56 +1,50 @@
-import collections
-
 class Solution:
+    # Create an adjacency list of email -> neighboring emails
+    # Also keep a map of which emails belong to which names
+    # Create the graph by mapping the first email of each account to every other email in the account and vice versa.
+    # Also map email -> name in email_names
+    # Iterate through the emails in the graph and for each email, get its name and then perform a DFS on that email if it's not visited.
+    # The DFS simply adds the email to visited and local res. Then for each edge, if it is not visited, call DFS on it and extend result.
+    # Once we get the associated emails for that email we need to add it to the result with the name first and the emails in sorted order.
+
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        # Use a iterative graph DFS to solve this.
-        # We first have to create a graph using the list of accounts.
-        # Map all emails to every other connected email.
-        # We also need a map to map each email to the user name. 
-        # Then we do an iterative DFS on this graph and get all the accounts for each user in a sorted fashion. 
-
-        graph = collections.defaultdict(set)
-        nameMap = {}
+        # Create a graph of email -> neighboring emails. 
+        # Also keep track of which name each email belongs to.
+        graph = defaultdict(set)
+        email_names = {}
         visited = set()
-        res = []
+        
+        # DFS: add email to visited and result. Call DFS on neighbors if they haven't been visited.
+        def dfs(email):
+            visited.add(email)
+            res = []
+            res.append(email)
+            for edge in graph[email]:
+                if edge not in visited:
+                    # Need to do extend here so we don't add the results as a separate nested list
+                    res.extend(dfs(edge))
+            return res
 
-        # Create the graph
-        for a in accounts:
-            # First index is always the name
-            name = a[0]
-            # Get the emails for this account
-            for e in a[1:]:
-                # We will link every email to the first email in the list as an optimization
-                # Add the first email as connected to this email
-                graph[e].add(a[1])
-                # Add this email as connected to the first email
-                graph[a[1]].add(e)
-                # Map this email to the name
-                nameMap[e] = name
+        # Create an adjacency list for each email
+        for account in accounts:
+            name = account[0]
+            for i in range(1, len(account)):
+                email = account[i]
+                # To save space, we only want to link the first email to the rest of the emails and not all of them to each other.
+                graph[account[1]].add(email)
+                graph[email].add(account[1])
+                email_names[email] = name
         
-        # Traverse the graph using DFS
+        res = []
+        # Traverse the graph
         for email in graph:
-            # We only do work if the email hasn't been visited
+            name = email_names[email]
+            # Only call DFS on this email if it hasn't been visited
             if email not in visited:
-                # Add email to stack
-                stack = [email]
-                # Set this as visited
-                visited.add(email)
-                # Keep track of the current result
-                curr_res = []
-                while stack:
-                    node = stack.pop()
-                    curr_res.append(node)
-                    # Go through every edge in the node and add it to the stack, set it as visited.
-                    for e in graph[node]:
-                        if e not in visited:
-                            stack.append(e)
-                            visited.add(e)
-                # Add the curr_res to the result, sorted.
-                # Also need to add the name as the first value in the array
-                res.append([nameMap[email]] + sorted(curr_res))
-        
+                res.append([name] + sorted(dfs(email)))
+
         return res
 
-# Time Complexity: if N is the number of accounts and K is the number of emails per accounts, then the time complexity is: O(N * K * N log K).
-# The N log K is for sorting the result for every email, NK is for doing DFS on the graph. 
-# Space Complexity: O(NK)
+# T: if N is number of accounts and K is emails per user, then we need to travers O(NK) when we traverse the graph. W
+# We then need to sort the accounts, which takes N log K time. So final time is O(KN^2logK)
+# S: We must store at least all all emails for all accounts, which is O(NK)
