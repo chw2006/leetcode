@@ -3,39 +3,40 @@ class Node:
         self.val = val
         self.next = next
 
-# Iterate through the list until we get to the node before the head node.
-# If the value to insert is in between the current and next values, insert it there and return the head.
-# If we hit the end of the list (node before head), we insert the node if it is larger than current or smaller than next.
-# Lastly, if we don't return within the loop, that means all values are the same. Just insert into list.
-def insert_into_cyclic_sorted_list(node, value):
-    # Edge case: if node is None, create a new node with value and return it. 
-    if not node:
-        new_node = Node(value)
+# If head doesn't exist, create a new node with insertVal with its next pointing to itself and return it.
+# Iterate through the list until we get to the node before the head.
+# While iterating, check if the value is in between the current value and next value. If it is, insert the value there.
+# If the current value is larger than the next value, then we are right before the cyclical part of the list.
+# Here we need to insert the new value after current and then link the new node to curr.next. 
+# If insertVal is in between current and next, but curr.val is smaller than next val, insert at end
+
+def insert(self, head, insertVal):
+    if not head:
+        new_node = Node(insertVal)
         new_node.next = new_node
         return new_node
     
-    curr = node
-    while curr.next != node:
-        # If the node value is in between current and next, insert it
-        if curr.val <= value <= curr.next.val:
-            new_node = Node(value, curr.next)
+    curr = head
+    while curr.next != head:
+        # Create new node and insert it in between
+        if curr.val <= insertVal <= curr.next.val:
+            new_node = Node(insertVal, curr.next)
             curr.next = new_node
-            return node
-        # We are at the end of the list (cyclical part)
+            return head
         elif curr.val > curr.next.val:
-            if value >= curr.val or value <= curr.next.val:
-                # We have to add this to the end of the list. 
-                new_node = Node(value, curr.next)
+            # If insertVal is in between the current and next, add to end of list
+            if insertVal >= curr.val or insertVal <= curr.next.val:
+                new_node = Node(insertVal, curr.next)
                 curr.next = new_node
-                return node
+                return head
         curr = curr.next
-    
-    # If we reached here, all value are the same, just insert the new node
-    new_node = Node(value, curr.next)
+
+    # If insertVal is in between current and next, but curr.val is smaller than next val, insert at end
+    new_node = Node(insertVal, curr.next)
     curr.next = new_node
 
-    return node
-    
+    return head
+
 node1 = Node(1)
 node3 = Node(3)
 node4 = Node(4)
@@ -44,7 +45,7 @@ node1.next = node3
 node3.next = node4
 node4.next = node1
 
-head = insert_into_cyclic_sorted_list(node3, 2)
+head = insert(node3, 2)
 curr = head
 while curr.next != head:
     print(curr.val)
@@ -53,6 +54,5 @@ print(curr.val)
 
 # Time Complexity: O(N) go through list once.
 # Space Complexity: O(1)
-
 
 
