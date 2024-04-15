@@ -63,3 +63,6 @@ class Solution:
             return False
 
         return dfs(0, 0, 0)
+    
+# T: O(M * N * D), where D is the difference between the 2 characters.
+# S: O(M * N * D) - we have to store all the values in a cache. 
