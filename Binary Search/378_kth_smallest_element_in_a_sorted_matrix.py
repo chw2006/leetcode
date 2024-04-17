@@ -39,7 +39,6 @@ class Solution:
             n = len(matrix)
             left = matrix[0][0]
             right = matrix[n - 1][n - 1]
-            res = -1
 
             # Count the amount of values smaller than x
             def countLessOrEqual(x):
@@ -57,19 +56,16 @@ class Solution:
                 return count
 
             # Do Binary search on the matrix
-            while left <= right:
-                mid = (left + right) // 2
+            while left < right:
+                mid = left + (right - left) // 2
                 # If there are more than k values smaller, go left. 
                 if countLessOrEqual(mid) >= k:
-                    # Set this to res for now, but this may not neccesarily be the answer
-                    res = mid
-                    # Go left to see if we can find a smaller value
-                    right = mid - 1
+                    right = mid
                 # Otherwise go right
                 else:
                     left = mid + 1
             
-            return res
+            return left
         
         return binary_search()
 
