@@ -46,5 +46,5 @@ class Solution:
         
         return False
 
-# T: O(log(M*N)) - We do binary search on m rows and then binary search again on a row. 
+# T: O(log(M) + log(N)) - We do binary search on m rows and then binary search again on a row. 
 # S: O(1) - We only use pointers
