@@ -13,18 +13,18 @@ class Solution:
         right = len(arr) - k
         # We do not want left and right to intersect since we are using left's value in the result
         while left < right:
-            mid = (left + right) // 2
+            mid = left + (right - left) // 2
             # Left distance is the distance beween x and mid. Since mid is supposed to be the start of the window, x is technically bigger. 
             left_distance = x - arr[mid]
             # Right distance is the distance of just outside the window
             right_distance = arr[mid + k] - x
             # If mid is closer to x than mid + k, then we go left. 
-            if left_distance > right_distance:
+            if right_distance >= left_distance
+                # Move window left.
+                right = mid
+            else:
                 # Move the window right
                 left = mid + 1
-            else:
-                # Move window left. We want mid here, not mid - 1. This is because we don't know if the window can extend beyond mid. 
-                right = mid
         
         return arr[left:left + k]
 
