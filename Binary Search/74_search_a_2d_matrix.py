@@ -17,16 +17,16 @@ class Solution:
             nums = matrix[row]
             l = 0
             r = n - 1
-            while l <= r:
+            while l <  r:
                 mid = l + (r - l) // 2
-                if nums[mid] == target:
-                    return True
-                elif nums[mid] > target:
-                    r = mid - 1
-                elif nums[mid] < target:
+                if nums[mid] >= target:
+                    r = mid
+                else:
                     l = mid + 1
-            
-            return False
+            if nums[l] == target:
+                return True
+            else:
+                return False
 
         # Search rows using binary search
         while left <= right:
