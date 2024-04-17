@@ -28,15 +28,15 @@ class pick:
         l = 0
         r = len(self.prefix_sum) - 1
         # We want to pick the first index that has a larger value than target. 
-        while l <= r:
+        while l < r:
             # Find the mid
-            mid = (l + r) // 2
+            mid = l + (r - l) // 2
             # If mid is smaller than target, go right
             if self.prefix_sum[mid] < target:
                 l = mid + 1
             # Otherwise go left
             else:
-                r = mid - 1
+                r = mid
         # We want the first index larger than the target.
         return l
 
