@@ -52,3 +52,57 @@ nums2 = [1]
 n = 1
 merge(nums1, m, nums2, n)
 print(nums1)  # [1]
+
+# Meta's variation of Merge sorted arrays
+# It asks us to sort 3 sorted arrays into one, without any duplicates.
+# It does not restrict us to do the sorting in-place. 
+def mergeSortedArrays(arr1, arr2, arr3):
+    res = []
+    len1 = len(arr1)
+    len2 = len(arr2)
+    len3 = len(arr3)
+    i = j = k = 0
+    
+    while i < len1 and j < len2 and k < len3:
+        # Make sure all indices are in bounds
+        val1 = float("inf")
+        val2 = float("inf")
+        val3 = float("inf")
+        # Only assign values if indicies are in bounds
+        if i < len1:
+            val1 = arr1[i]
+        if j < len2:
+            val2 = arr2[j]
+        if k < len3:
+            val3 = arr3[k]
+        # If we exhaust all values, break
+        if val1 == float("inf") and val2 == float("inf") and val3 == float("inf"):
+            break
+        
+        # Case where arr1 is smallest
+        if val1 <= val2 and val1 <= val3:
+            if not res or res[-1] != val1:
+                res.append(val1)
+            i += 1
+        # Case where arr2 is smallest
+        elif val2 <= val1 and val2 <= val3:
+            if not res or res[-1] != val2:
+                res.append(val2)
+            j += 1
+        # Case where arr3 is smallest
+        elif val3 <= val1 and val3 <= val2:
+            if not res or res[-1] != val3:
+                res.append(val3)
+            k += 1
+        
+    return res
+
+# T: O(M + N + O)
+# S: O(M + N + O)
+
+arr1 = [1, 5, 9, 10, 15, 20]
+arr2 = [2, 3, 8, 13]
+arr3 = [4, 7, 11, 14]
+
+print(mergeSortedArrays(arr1, arr2, arr3))
+print(nums1)  # [1]
