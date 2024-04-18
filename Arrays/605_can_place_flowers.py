@@ -8,27 +8,20 @@ class Solution:
     # We also decrement n.
     # If at any point, n is less than or equal to 0, we return True.
     # At the end, we return False. 
+class Solution:
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
         def canPlant(i):
-            # If both left or right are out of bounds, we can plant if the cell is 0. 
-            left = i - 1
-            right = i + 1
-            # Both out of bounds
-            if left < 0 and right >= len(flowerbed):
-                if flowerbed[i] == 0:
-                    return True
-            # If left is out of bounds
-            elif left < 0:
-                if flowerbed[i] == 0 and flowerbed[i + 1] == 0:
-                    return True
-            # If right is out of bounds
-            elif right >= len(flowerbed):
-                if flowerbed[i] == 0 and flowerbed[i - 1] == 0:
-                    return True
-            # If both are in bounds
-            else:
-                if flowerbed[i] == 0 and flowerbed[i - 1] == 0 and flowerbed[i + 1] == 0:
-                    return True
+            # Start the left and right at 0
+            left = 0
+            right = 0
+            # If left and right are in-bounds, set them
+            if i - 1 >= 0:
+                left = flowerbed[i - 1]
+            if i + 1 < len(flowerbed):
+                right = flowerbed[i + 1]
+            # We can only plant if the flowerbed is 0 and its neighbors are 0
+            if flowerbed[i] == 0 and left == 0 and right == 0:
+                return True
             
             return False
 
