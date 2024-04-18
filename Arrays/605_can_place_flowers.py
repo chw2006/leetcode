@@ -8,7 +8,6 @@ class Solution:
     # We also decrement n.
     # If at any point, n is less than or equal to 0, we return True.
     # At the end, we return False. 
-class Solution:
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
         def canPlant(i):
             # Start the left and right at 0
