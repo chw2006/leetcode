@@ -48,3 +48,55 @@ class Solution:
 # T: if N is number of accounts and K is emails per user, then we need to travers O(NK) when we traverse the graph. W
 # We then need to sort the accounts, which takes N log K time. So final time is O(KN^2logK)
 # S: We must store at least all all emails for all accounts, which is O(NK)
+
+def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+    # Build the graph mapping courses to its pre-reqs
+    # Then go through the graph using topological sort
+    # To use topological sort, we use 3 sets.
+    # White set contains all nodes at the start
+    # Gray set contains only the current node we are processing
+    # Black set contains nodes we're done processing
+    # If an edge is in gray, we have a cycle. 
+    # If an edge is in black, we can skip processing it since we know we're done.
+    # After processing node, remove from gray and add to black. 
+    graph = defaultdict(list)
+    # Create a graph
+    for p in prerequisites:
+        prereq = p[1]
+        course = p[0]
+        graph[course].append(prereq)
+
+    # Use topological sort to traverse graph
+    white = set(graph.keys())
+    gray = set()
+    black = set()
+
+    def dfs(node):
+        # Add node to gray set since we are processing
+        gray.add(node)
+
+        # Traverse its neighbors
+        for edge in graph[node]:
+            # If an edge is in the gray set, we have a cycle
+            if edge in gray:
+                return False
+            # If an edge is in black, it's already been processed so we can skip
+            if edge in black:
+                continue
+            # Call DFS on the edge
+            if not dfs(edge):
+                return False
+        # Remove current node from gray since we're done with it
+        gray.remove(node)
+        # Add to black to show that we've processed it
+        black.add(node)
+
+        return True
+
+    # Go through each node in graph
+    for node in white:
+        # For each node in white, call DFS
+        if not dfs(node):
+            return False
+    
+    return True
