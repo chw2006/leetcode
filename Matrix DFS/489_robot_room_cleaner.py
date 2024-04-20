@@ -61,7 +61,7 @@ def cleanRoom(robot):
         # Clean this current tile
         robot.clean()
         # Add to visited
-        visited.append((x, y))
+        visited.add((x, y))
 
         # Find the next tile to move to
         for i in range(len(directions)):
