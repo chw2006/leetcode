@@ -29,6 +29,31 @@ class Solution:
 # Time Complexity: O(K * logN)
 # Space Complexity: O(N). We store all items in a heap and then k items in the result. Worst case O(N)
 
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+            # Generate the distance of each point to the origin. Place them in a max heap with vals as tuples (-distance, index)
+            # To calculate euclidean distance, use sqrt(x**2 + y**2). 
+            # Use maxHeap. Push onto heap as negative values. If heap gets larger than size k, pop from it. 
+            heap = []
+    
+            # Get distances and push into maxheap
+            for i, point in enumerate(points):
+                x = point[0]
+                y = point[1]
+    
+                distance = sqrt(x**2 + y**2)
+                # Push onto heap
+                heapq.heappush(heap, (-distance, [x, y]))
+                # If size of heap is ever larger than k, pop its largest value
+                if len(heap) > k:
+                    heapq.heappop(heap)
+    
+            # Return only the points in the heap
+            return [point for _, point in heap]
+    
+    
+# T: O(NlogK)
+# S: O(N)
+
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
         # This uses quick select
