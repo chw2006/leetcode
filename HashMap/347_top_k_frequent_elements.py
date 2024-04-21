@@ -41,21 +41,13 @@ class Solution:
         # Each index acts as the # of occurences for each value and the value at the index is a list of numbers.
         # We then go through that list from largest to smallest and add values to our result until we hit k values. 
         def bucket():
-            occurences = {}
+            occurences = Counter(nums)
             bucket = [[] for i in range(len(nums) + 1)]
             res = []
-            # Count the number of occurences of each number
-            for num in nums:
-                if num in occurences:
-                    occurences[num] += 1
-                else:
-                    occurences[num] = 1
             
             # Go through each key and map it to the bucket list
-            for key in occurences.keys():
+            for key in occurences:
                 bucket[occurences[key]].append(key)
-            
-            print(bucket)
 
             for i in range(len(bucket) - 1, 0, -1):
                 for n in bucket[i]:
