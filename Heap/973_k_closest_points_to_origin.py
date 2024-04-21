@@ -56,56 +56,57 @@ class Solution:
 
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        # This uses quick select
-        # Basically, we want to find a partition index such that its k values to the left all have a smaller distance. 
-        # So partition the array where all values smaller than pivot are to the left of it. Return partition index.
-        # If partition index == k - 1, we have found the cut-off. Otherwise move left and right.
-        # Loop from 0 to partition_index + 1 and add the original points to the result. 
-        nums = []
-        for i, point in enumerate(points):
+        # Use Quickselect, which is O(N) with random pivot selection and O(1) space.
+        # Quickselect starts with 2 pointers, each at the end of the array.
+        # Find the partition index based on the range we are given.
+        # If partition index is equal to k, return all values prior to k. 
+        # If the partition index > k, that means we have more than k elements smaller than the partition index, so move left (right = index - 1)
+        # If partition index < k, that means we need to move right (left = index + 1)
+        # To find partition index, generate a random pivot. 
+        # Swap pivot element and right-most element. 
+        # Keep a swap pointer starting at 0.
+        # Go from left to right, and compare each value to the pivot. If a value is smaller or equal to the pivot, move it to the swap index and increment swap index. 
+        # After swapping is done, swap the pivot value (to right of array) with the swap index value. Because swap points at the first element larger than pivot. 
+        # Return swap as partition index. 
+
+        # Calculate the distance between this point and the origin
+        def getDistance(point):
             x = point[0]
             y = point[1]
             distance = sqrt(x**2 + y**2)
-            nums.append((distance, i))
+            return distance
 
-        left = 0
-        right = len(nums) - 1
-        res = []
-
-        def partition(l, r):
-            # Pick a pivot index
-            pivot_index = random.randint(l, r)
-            pivot = nums[pivot_index][0]
-            # Swap pivot index with r
-            nums[r], nums[pivot_index] = nums[pivot_index], nums[r]
-            swap = l
-            # Go from l to r and swap any values that is smaller than or equal to the pivot
-            for i in range(l, r):
-                if nums[i][0] <= pivot:
-                    nums[i], nums[swap] = nums[swap], nums[i]
+        # Find the partition index
+        def partition(left, right):
+            swap = left
+            pivot_idx = random.randint(left, right)
+            pivot = points[pivot_idx]
+            pivot_distance = getDistance(pivot)
+            # Swap pivot and right
+            points[right], points[pivot_idx] = points[pivot_idx], points[right]
+            for i in range(left, right):
+                distance = getDistance(points[i])
+                # Swap current and swap
+                if distance <= pivot_distance:
+                    points[swap], points[i] = points[i], points[swap]
                     swap += 1
-            # Swap the pivot with value at swap
-            nums[swap], nums[r] = nums[r], nums[swap]
+            # Swap swap and pivot
+            points[swap], points[right] = points[right], points[swap]
             return swap
 
-        idx = -1
+        # Do quickselect
+        left = 0
+        right = len(points) - 1
         while left < right:
-            part_index = partition(left, right)
-            # This means the partition index is the kth value, where all items to the left of it are the closest to the origin.  
-            if part_index == k - 1:
-                idx = part_index
+            partition_idx = partition(left, right)
+            if partition_idx == k:
                 break
-            elif part_index > k - 1:
-                # If the partition index has more than k values to the left of it, we need to move the right pointer.
-                right -= 1
-            elif part_index < k - 1:
-                # If partition index has less than k values to the left of it, we need to move the left pointer
-                left += 1
+            if partition_idx > k:
+                right = partition_idx - 1
+            elif partition_idx < k:
+                left = partition_idx + 1
         
-        for i in range(0, idx + 1):
-            res.append(points[nums[i][1]])
-        
-        return res
+        return points[:k]
 
-# T: O(N) - on average, it is O(N) with a good pivot selection. It is O(N**2) in the worst case. 
-# S: O(N) - we had to copy values to a new array
+# T: O(N) in the average case. O(N**2) in the worst case, but we have a random pivot so we should be fine. 
+# S: O(1)
