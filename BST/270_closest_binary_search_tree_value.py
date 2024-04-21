@@ -12,33 +12,38 @@ class Solution:
     @param target: the given target
     @return: the value in the BST that is closest to the target
     """
-    def closest_value(self, root: TreeNode, target: float) -> int:
-        # Find the difference between the target and the current node. If it is the min, save the node value and its difference. 
-        # If the value is smaller than root, search in the left subtree.
-        # If it is larger, search in the right subtree
-        # At the end of the DFS, return the min_val. 
-        self.min_diff = float('inf')
-        self.min_val = float('inf')
-        
-        def dfs(node):
-            if not node:
-                return None
-            # Get the difference between the target and node val
-            diff = abs(node.val - target)
-            # If it is smaller than min_diff set min_diff and min_val
-            if diff < self.min_diff:
-                self.min_diff = diff
-                self.min_val = node.val
+    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+        # Find the difference between the root val and the target. abs(target - root.val)
+        # Keep track of the min_diff and the min_val. 
+        # We can do binary search on this tree, so if the target is smaller than root, look left.
+        # If target is larger than root, look right. 
+        # If target is equal to root, set that as min_val. 
+        min_diff = float("inf")
+        min_val = float("inf")
 
-            if target < node.val:
-                dfs(node.left)
-            elif target > node.val:
+        def dfs(node):
+            nonlocal min_diff, min_val
+            if not node:
+                return
+            # Do preorder traversal
+            diff = abs(node.val - target)
+            # In the case where the diffs are equal, we want the smaller node value
+            if diff == min_diff:
+                if node.val < min_val:
+                    min_val = node.val
+            # If diff is smaller than min, update both min and value.
+            elif diff < min_diff:
+                min_diff = diff
+                min_val = node.val
+            # Now choose the route based on target value
+            if target > node.val:
                 dfs(node.right)
+            elif target < node.val:
+                dfs(node.left)
         
         dfs(root)
-        
-        return self.min_val
 
-# This can also be done iteratively without a stack even. We just keep assigning root to its children. 
-# T: O(H) - It depends, but in the worst case it is O(N) while in most cases a binary search tree would provide O(logN), which is the height of the tree. 
-# S: O(H) - where H is the height of the tree (if we count stack frames for recursion)
+        return min_val
+
+# T: O(logN) in the average case. Worst case could be O(N) if tree is not balanced.
+# S: O(H)
