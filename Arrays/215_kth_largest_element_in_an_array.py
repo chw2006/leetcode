@@ -33,11 +33,11 @@ def findKthLargest(nums, k):
     
     left = 0
     right = len(nums) - 1
-    while nums:
+    while left <= right:
         p_index = partition(left, right)
-        if p_index == len(nums) - k - 1:
+        if p_index == len(nums) - k:
             return nums[p_index]
-        elif p_index > len(nums) - k - 1:
+        elif p_index > len(nums) - k:
             # Move left
             right = p_index - 1
         else:
